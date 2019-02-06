@@ -2,6 +2,7 @@ const path = require('path')
 const http = require('http') 
 const express = require('express')
 const socketIO = require('socket.io')
+const { generateMessage } = require('./utils/message')
 
 const publicPath = path.join(__dirname, '../public') // Setup relative path
 
@@ -19,30 +20,16 @@ io.on('connection', (socket)=>{ // Check if user connected
         console.log('User dissconected')
     })
 
-    socket.emit('Welcome', {
-        from: 'Admin',
-        text: 'Welcome to the chat room',
-        createdAt: new Date().getTime()
-    })
+    // Welcome message for new user
+    socket.emit('Welcome', generateMessage('Admin', 'Welcome to chat'))
 
-    socket.broadcast.emit('newUserJoined', {
-        from: 'Admin',
-        text: 'New user joined the room',
-        createdAt: new Date().getTime()
-    })
+    // Alert message new user joined
+    socket.broadcast.emit('newUserJoined', generateMessage('Admin', 'New user joined the room'))
 
+    // Listening to new message emit from client side
     socket.on('sendMessage', (message)=>{
-        console.log('Create message: ', message)
-        io.emit('newMessage', {
-            from: newMessage.from,
-            text: newMessage.text,
-            createdAt: new Date().getTime()
-        })
-        // socket.broadcast.emit('newMessage', {
-        //     from: message.from,
-        //     text: message.text,
-        //     createdAt: new Date().getTime()
-        // })
+        // Emiting the message to all users
+        io.emit('newMessage', generateMessage(message.from, message.text))
     })
 })
 
