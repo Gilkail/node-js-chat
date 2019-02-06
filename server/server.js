@@ -19,9 +19,9 @@ io.on('connection', (socket)=>{ // Check if user connected
         console.log('User dissconected')
     })
 
-    socket.emit('wellcome', {
+    socket.emit('Welcome', {
         from: 'Admin',
-        text: 'Wellcome to the chat room',
+        text: 'Welcome to the chat room',
         createdAt: new Date().getTime()
     })
 

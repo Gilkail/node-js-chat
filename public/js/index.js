@@ -11,7 +11,7 @@ socket.on('newMessage', function(data){
     console.log('New message: ', data)
 })
 
-socket.on('wellcome', function(message){
+socket.on('Welcome', function(message){
     console.log(message)
 })
 
