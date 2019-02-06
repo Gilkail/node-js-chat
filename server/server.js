@@ -21,12 +21,11 @@ io.on('connection', (socket)=>{ // Check if user connected
 
     socket.on('createMessage', (newMessage)=>{
         console.log('Create message: ', newMessage)
-    })
-
-    socket.emit('newMessage', {
-        from: 'Gil',
-        text: 'Hello world',
-        createdAt:  new Date().getTime()
+        io.emit('newMessage', {
+            from: newMessage.from,
+            text: newMessage.text,
+            createdAt: new Date().getTime()
+        })
     })
 })
 
