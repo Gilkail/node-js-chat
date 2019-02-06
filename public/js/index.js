@@ -10,3 +10,11 @@ socket.on('connect', function(){
 socket.on('newMessage', function(data){
     console.log('New message: ', data)
 })
+
+socket.on('wellcome', function(message){
+    console.log(message)
+})
+
+socket.on('newUserJoined', function(message){
+    console.log(message)
+})

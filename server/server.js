@@ -19,13 +19,30 @@ io.on('connection', (socket)=>{ // Check if user connected
         console.log('User dissconected')
     })
 
-    socket.on('createMessage', (newMessage)=>{
-        console.log('Create message: ', newMessage)
+    socket.emit('wellcome', {
+        from: 'Admin',
+        text: 'Wellcome to the chat room',
+        createdAt: new Date().getTime()
+    })
+
+    socket.broadcast.emit('newUserJoined', {
+        from: 'Admin',
+        text: 'New user joined the room',
+        createdAt: new Date().getTime()
+    })
+
+    socket.on('sendMessage', (message)=>{
+        console.log('Create message: ', message)
         io.emit('newMessage', {
             from: newMessage.from,
             text: newMessage.text,
             createdAt: new Date().getTime()
         })
+        // socket.broadcast.emit('newMessage', {
+        //     from: message.from,
+        //     text: message.text,
+        //     createdAt: new Date().getTime()
+        // })
     })
 })
 
