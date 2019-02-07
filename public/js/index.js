@@ -8,22 +8,25 @@ socket.on('connect', function(){
 // })
 
 socket.on('newMessage', function(data){
-    const formattedTime = moment(data.createdAt).format('H:mm')
-    const li = jQuery('<li></li>')
-    li.text(formattedTime+' - '+data.from+': '+data.text)
-    jQuery('#messages').append(li)
+
+    const template = jQuery('#message-template').html()
+    const html = Mustache.render(template, {
+        ...data,
+        formatedTime: moment(data.createdAt).format('H:mm')
+    })
+
+    jQuery('#messages').append(html)
 })
 
 socket.on('newLocationMessage', function(data){
-    const li = jQuery('<li></li>')
-    const a = jQuery('<a target="_blank">Location</a>')
-    const formattedTime = moment(data.createdAt).format('H:mm')
-    
-    li.html(formattedTime+' - '+data.from+': ')
-    a.attr('href', data.url)
-    li.append(a)
 
-    jQuery('#messages').append(li)
+    const template = jQuery('#location-template').html()
+    const html = Mustache.render(template, {
+        ...data,
+        formatedTime: moment(data.createdAt).format('H:mm')
+    })
+
+    jQuery('#messages').append(html)
 })
 
 
