@@ -8,13 +8,18 @@ socket.on('connect', function(){
 // })
 
 socket.on('newMessage', function(data){
-    console.log('New message: ', data)
+    const li = jQuery('<li></li>')
+    li.text(`From ${data.from}: ${data.text}`)
+    jQuery('#messages').append(li)
 })
 
-socket.on('Welcome', function(message){
-    console.log(message)
-})
-
-socket.on('newUserJoined', function(message){
-    console.log(message)
+jQuery('#message-form').on('submit', function(e){
+    e.preventDefault()
+    socket.emit('sendMessage', {
+        from: 'Gil',
+        text: jQuery('[name=message]').val()
+    }, function(data){
+        jQuery('[name=message]').val("")
+        console.log(data)
+    })  
 })

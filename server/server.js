@@ -21,15 +21,16 @@ io.on('connection', (socket)=>{ // Check if user connected
     })
 
     // Welcome message for new user
-    socket.emit('Welcome', generateMessage('Admin', 'Welcome to chat'))
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to chat'))
 
     // Alert message new user joined
-    socket.broadcast.emit('newUserJoined', generateMessage('Admin', 'New user joined the room'))
+    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined the room'))
 
     // Listening to new message emit from client side
-    socket.on('sendMessage', (message)=>{
+    socket.on('sendMessage', (message, callback)=>{
         // Emiting the message to all users
         io.emit('newMessage', generateMessage(message.from, message.text))
+        callback('This is from the server')
     })
 })
 
