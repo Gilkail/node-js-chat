@@ -30,7 +30,7 @@ io.on('connection', (socket)=>{ // Check if user connected
     socket.on('sendMessage', (message, callback)=>{
         // Emiting the message to all users
         io.emit('newMessage', generateMessage(message.from, message.text))
-        callback('This is from the server')
+        callback()
     })
 
     socket.on('createLocationMessage', (coords)=>{
