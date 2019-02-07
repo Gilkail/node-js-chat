@@ -2,7 +2,7 @@ const path = require('path')
 const http = require('http') 
 const express = require('express')
 const socketIO = require('socket.io')
-const { generateMessage } = require('./utils/message')
+const { generateMessage, generateLocationMessage } = require('./utils/message')
 
 const publicPath = path.join(__dirname, '../public') // Setup relative path
 
@@ -31,6 +31,11 @@ io.on('connection', (socket)=>{ // Check if user connected
         // Emiting the message to all users
         io.emit('newMessage', generateMessage(message.from, message.text))
         callback('This is from the server')
+    })
+
+    socket.on('createLocationMessage', (coords)=>{
+        // Emiting the message to all users
+        io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude))
     })
 })
 
