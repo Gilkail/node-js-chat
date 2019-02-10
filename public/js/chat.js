@@ -1,11 +1,31 @@
 const socket = io();
+
 socket.on('connect', function(){
-    console.log('connected')
+    const params = jQuery.deparam(window.location.search)
+
+    socket.emit('join', params, function(err){
+        if (err){
+            alert(err)
+            window.location.href = '/'
+        }else{
+            console.log('no error')
+        }
+    })
+    
 })
 
-// socket.on('disconnect', function(){
-//     console.log('Disconnected')
-// })
+socket.on('disconnect', function(){
+    console.log('Disconnected')
+})
+
+socket.on('updateUserList', function(users){
+    const ol = jQuery('<ol></ol>')
+    users.forEach(function(user){
+        ol.append(jQuery('<li></li>').text(user))
+    })
+    jQuery('#users').html(ol)
+    // console.log('Users list ',users)
+})
 
 function scrollToBottom () {
     const messages = jQuery('#messages')
