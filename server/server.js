@@ -58,14 +58,22 @@ io.on('connection', (socket)=>{ // Check if user connected
 
     // Listening to new message emit from client side
     socket.on('sendMessage', (message, callback)=>{
-        // Emiting the message to all users
-        io.emit('newMessage', generateMessage(message.from, message.text))
+        const user = users.getUser(socket.id)
+
+        if(user && isRealString(message.text)){
+            // Emiting the message to all users
+            io.to(user.room).emit('newMessage', generateMessage(user.name, message.text))
+        }
         callback()
     })
 
     socket.on('createLocationMessage', (coords)=>{
-        // Emiting the message to all users
-        io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude))
+        const user = users.getUser(socket.id)
+
+        if(user){
+            // Emiting the message to all users
+            io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude))
+        }
     })
 })
 

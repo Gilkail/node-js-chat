@@ -24,7 +24,7 @@ socket.on('updateUserList', function(users){
         ol.append(jQuery('<li></li>').text(user))
     })
     jQuery('#users').html(ol)
-    // console.log('Users list ',users)
+    console.log('Users list ',users)
 })
 
 function scrollToBottom () {
@@ -48,7 +48,8 @@ socket.on('newMessage', function(data){
 
     const template = jQuery('#message-template').html()
     const html = Mustache.render(template, {
-        ...data,
+        from: data.from,
+        text: data.text,
         formatedTime: moment(data.createdAt).format('H:mm')
     })
 
@@ -60,7 +61,8 @@ socket.on('newLocationMessage', function(data){
 
     const template = jQuery('#location-template').html()
     const html = Mustache.render(template, {
-        ...data,
+        from: data.from,
+        url: data.url,
         formatedTime: moment(data.createdAt).format('H:mm')
     })
 
@@ -73,7 +75,6 @@ jQuery('#message-form').on('submit', function(e){
     e.preventDefault()
     const messageTextBox = jQuery('[name=message]')
     socket.emit('sendMessage', {
-        from: 'Gil',
         text: messageTextBox.val()
     }, function(){
         messageTextBox.val("")
